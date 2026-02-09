@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3000', // <--- Sin '/api' al final
+  // Hardcodeamos la IP pública y el puerto externo (3001)
+  apiUrl: 'http://31.97.94.155:3001/api'
 };
