@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: '/api', // En producción, usa la misma URL
+  apiUrl: 'http://localhost:3000/api', // Will be replaced during Docker build
 };

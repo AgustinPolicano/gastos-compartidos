@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+dist
+.angular
+.git
+.gitignore
+README.md
+.editorconfig
+.vscode
+*.log
+coverage
+e2e
