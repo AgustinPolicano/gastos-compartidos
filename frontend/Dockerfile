@@ -9,8 +9,9 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --only=production
+# --- CAMBIO IMPORTANTE ---
+# Instalamos TODO (dev + prod) para tener el comando 'ng' disponible
+RUN npm install 
 
 # Copy source code
 COPY . .
@@ -21,7 +22,7 @@ RUN sed -i "s|http://localhost:3000|${API_URL}|g" src/environments/environment.p
 # Build Angular app for production
 RUN npm run build
 
-# Production stage with nginx
+# --- ETAPA FINAL (NGINX) ---
 FROM nginx:alpine
 
 # Remove default nginx config
@@ -31,6 +32,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built app from builder
+# OJO: Asegurate que 'frontend' sea el nombre de tu proyecto en angular.json
+# Si falla el copy, verificá si la carpeta es dist/gastos-compartidos/browser
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 
 # Expose port
