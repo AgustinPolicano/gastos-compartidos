@@ -1,49 +1,41 @@
-# --- ETAPA 1: BUILDER ---
+# --- ETAPA 1: BUILDER (Compilación) ---
   FROM node:22-alpine AS builder
 
   WORKDIR /app
   
-  # Copiamos archivos de dependencias
-  COPY package*.json ./
-  COPY tsconfig.json ./
+  COPY package*.json tsconfig.json ./
   
-  # 1. Instalamos TODO (incluyendo devDependencies como TypeScript)
-  # Usamos --ignore-scripts para que NO se ejecute 'postinstall' automáticamente y falle
-  RUN npm install --ignore-scripts
+  # Instalamos TODO (incluido TypeScript) para poder compilar
+  # Acá "tsc" sí va a funcionar porque se está instalando
+  RUN npm install
   
-  # Copiamos el código fuente
   COPY src ./src
   COPY drizzle ./drizzle
   
-  # 2. Ahora sí, ejecutamos el build manualmente
+  # Compilamos el código TS a JS
   RUN npm run build
   
-  # --- ETAPA 2: PRODUCTION ---
+  # --- ETAPA 2: PRODUCTION (Ejecución) ---
   FROM node:22-alpine
   
   WORKDIR /app
   
-  # Copiamos package.json
   COPY package*.json ./
   
-  # 3. Instalamos SOLO dependencias de producción
-  # Usamos 'npm install' en vez de 'ci' para evitar errores de lockfile
-  RUN npm install --omit=dev --ignore-scripts
+  # 1. Instalamos herramientas necesarias para compilar bcrypt (Python, Make, GCC)
+  RUN apk add --no-cache python3 make g++
   
-  # Copiamos lo que construimos en la etapa anterior
+  # 3. Ahora instalamos dependencias de producción SIN "--ignore-scripts"
+  # Gracias al paso 2, tsc no molesta, pero bcrypt sí se compila.
+  RUN npm install --omit=dev
+  
+  # 4. Copiamos solo el código compilado
   COPY --from=builder /app/dist ./dist
+  # (Opcional: carpeta drizzle si la usás en runtime, sino borrala)
   COPY --from=builder /app/drizzle ./drizzle
-  
-  # Archivos necesarios para migraciones
-  COPY tsconfig.json ./
-  COPY src/db/migrate.ts ./src/db/migrate.ts
-  
-  # Instalamos tsx para correr las migraciones en producción
-  RUN npm install tsx --save-prod
   
   EXPOSE 3000
   
-  # Healthcheck
   HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
   
