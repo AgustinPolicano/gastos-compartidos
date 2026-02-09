@@ -5,11 +5,11 @@ import { expenses, installmentPayments, payments, settings } from '../db/schema'
 export interface BalanceResult {
   person1Name: string;
   person2Name: string;
-  person1Owes: number; // Lo que persona 1 debe (gastos que pagó persona 2)
-  person2Owes: number; // Lo que persona 2 debe (gastos que pagó persona 1)
+  person1Owes: number; // Lo que persona 1 adeuda (gastos que pagó persona 2)
+  person2Owes: number; // Lo que persona 2 adeuda (gastos que pagó persona 1)
   person1Paid: number; // Total de transferencias que persona 1 hizo a persona 2
   person2Paid: number; // Total de transferencias que persona 2 hizo a persona 1
-  netBalance: number; // Positivo = persona 1 debe, Negativo = persona 2 debe
+  netBalance: number; // Positivo = persona 1 adeuda, Negativo = persona 2 adeuda
   whoOwes: string; // 'person1' | 'person2' | 'even'
   amount: number; // Monto absoluto de la deuda
 }
@@ -98,12 +98,12 @@ export const calculateBalance = async (month?: number, year?: number): Promise<B
       person2Share = (amount * person2Percentage) / 100;
     }
 
-    // Si persona 2 pagó, persona 1 le debe su parte
+    // Si persona 2 pagó, persona 1 le adeuda su parte
     if (paidBy.toLowerCase() === person2Name.toLowerCase()) {
       person1OwesFromExpenses += person1Share;
     }
 
-    // Si persona 1 pagó, persona 2 le debe su parte
+    // Si persona 1 pagó, persona 2 le adeuda su parte
     if (paidBy.toLowerCase() === person1Name.toLowerCase()) {
       person2OwesFromExpenses += person2Share;
     }
@@ -174,8 +174,8 @@ export const calculateBalance = async (month?: number, year?: number): Promise<B
   }
 
   // 6. Calcular balance neto
-  // person1Owes - person1Paid = lo que persona 1 debe neto
-  // person2Owes - person2Paid = lo que persona 2 debe neto
+  // person1Owes - person1Paid = lo que persona 1 adeuda neto
+  // person2Owes - person2Paid = lo que persona 2 adeuda neto
   const person1NetDebt = person1OwesFromExpenses - person1PaidToPerson2;
   const person2NetDebt = person2OwesFromExpenses - person2PaidToPerson1;
 

@@ -32,11 +32,11 @@ import { AuthService } from './core/services/auth.service';
                   Gastos
                 </a>
                    <a
-                  routerLink="/expenses"
+                  routerLink="/fixed-expenses"
                   routerLinkActive="bg-blue-100 text-blue-700"
                   class="px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors"
                 >
-                  Gastos
+                  Gastos fijos
                 </a>
                 <a
                   routerLink="/payments"

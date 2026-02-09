@@ -58,7 +58,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
               <div class="text-4xl font-bold text-gray-900 mb-2">\${{ bal.amount | number:'1.0-0' }}</div>
               <p class="text-lg text-gray-600">
                 <span class="font-medium text-gray-900">{{ bal.whoOwes === 'person1' ? bal.person1Name : bal.person2Name }}</span>
-                le debe a
+                le adeuda a
                 <span class="font-medium text-gray-900">{{ bal.whoOwes === 'person1' ? bal.person2Name : bal.person1Name }}</span>
               </p>
             </div>
@@ -66,11 +66,11 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 
           <div class="grid grid-cols-2 gap-8 mt-8 pt-8 border-t border-gray-100">
             <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">{{ bal.person1Name }} debe</p>
+              <p class="text-sm font-medium text-gray-500 mb-1">{{ bal.person1Name }} adeuda</p>
               <p class="text-xl font-bold text-gray-900">\${{ bal.person1Owes | number:'1.0-0' }}</p>
             </div>
             <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">{{ bal.person2Name }} debe</p>
+              <p class="text-sm font-medium text-gray-500 mb-1">{{ bal.person2Name }} adeuda</p>
               <p class="text-xl font-bold text-gray-900">\${{ bal.person2Owes | number:'1.0-0' }}</p>
             </div>
             <div>
