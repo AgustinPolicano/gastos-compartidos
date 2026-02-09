@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1770666761283,
+      "tag": "0000_volatile_vargas",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770669754469,
+      "tag": "0001_broad_the_watchers",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770670217780,
+      "tag": "0002_early_colonel_america",
+      "breakpoints": true
+    }
+  ]
+}
