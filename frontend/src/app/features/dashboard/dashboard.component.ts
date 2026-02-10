@@ -24,10 +24,21 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 
         <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-sm">
           <div>
-            <p class="text-gray-500 mb-1">Gastos reales</p>
+            <p class="text-gray-500 mb-1">Total del mes</p>
             <p class="text-lg font-bold text-gray-900">\${{ monthlyExpensesTotal() | number:'1.0-0' }}</p>
           </div>
           <div>
+            <p class="text-gray-500 mb-1">{{ balance()?.person1Name || 'Persona 1' }}</p>
+            <p class="text-lg font-bold text-gray-900">\${{ person1MonthlyTotal() | number:'1.0-0' }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 mb-1">{{ balance()?.person2Name || 'Persona 2' }}</p>
+            <p class="text-lg font-bold text-gray-900">\${{ person2MonthlyTotal() | number:'1.0-0' }}</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100 text-sm">
+             <div>
             <p class="text-gray-500 mb-1">Gastos fijos</p>
             <p class="text-lg font-bold text-gray-900">\${{ fixedExpensesTotal() | number:'1.0-0' }}</p>
           </div>
@@ -99,10 +110,21 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 
         <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100 text-sm">
           <div>
-            <p class="text-gray-500 mb-1">Gastos reales</p>
+            <p class="text-gray-500 mb-1">Total del mes</p>
             <p class="text-lg font-bold text-gray-900">\${{ monthlyExpensesTotal() | number:'1.0-0' }}</p>
           </div>
           <div>
+            <p class="text-gray-500 mb-1">{{ balance()?.person1Name || 'Persona 1' }}</p>
+            <p class="text-lg font-bold text-gray-900">\${{ person1MonthlyTotal() | number:'1.0-0' }}</p>
+          </div>
+          <div>
+            <p class="text-gray-500 mb-1">{{ balance()?.person2Name || 'Persona 2' }}</p>
+            <p class="text-lg font-bold text-gray-900">\${{ person2MonthlyTotal() | number:'1.0-0' }}</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-100 text-sm">
+             <div>
             <p class="text-gray-500 mb-1">Gastos fijos</p>
             <p class="text-lg font-bold text-gray-900">\${{ fixedExpensesTotal() | number:'1.0-0' }}</p>
           </div>
@@ -306,6 +328,27 @@ export class DashboardComponent implements OnInit {
       const monthlyPayment = parseFloat(e.amount) / (e.totalInstallments || 1);
       return sum + monthlyPayment;
     }, 0);
+  });
+
+  // Computed: Total gastado por persona 1 en el mes (incluye cuotas proporcionales si es él quien paga)
+  // Nota: Para simplificar, sumamos gastos directos pagados por la persona.
+  person1MonthlyTotal = computed(() => {
+    const p1Name = this.balance()?.person1Name;
+    if (!p1Name) return 0;
+
+    return this.monthExpenses()
+      .filter(e => e.paidBy === p1Name)
+      .reduce((sum, e) => sum + parseFloat(e.amount), 0);
+  });
+
+  // Computed: Total gastado por persona 2 en el mes
+  person2MonthlyTotal = computed(() => {
+    const p2Name = this.balance()?.person2Name;
+    if (!p2Name) return 0;
+
+    return this.monthExpenses()
+      .filter(e => e.paidBy === p2Name)
+      .reduce((sum, e) => sum + parseFloat(e.amount), 0);
   });
 
   // Computed: Estimado total del mes
