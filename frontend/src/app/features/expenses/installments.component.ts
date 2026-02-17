@@ -9,7 +9,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
   standalone: true,
   imports: [CommonModule, RouterLink, LoaderComponent],
   template: `
-    <div class="max-w-4xl mx-auto p-6">
+    <div class="max-w-4xl mx-auto p-4 md:p-6">
       <a routerLink="/expenses" class="text-slate-600 hover:text-slate-900 mb-6 inline-flex items-center font-medium transition-colors">
         <span class="mr-2">←</span> Volver a gastos
       </a>
@@ -19,10 +19,10 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
       } @else {
         @if (data(); as d) {
         <!-- Header -->
-        <div class="bg-white rounded-xl shadow-md p-6 mb-6 border-l-4 border-l-slate-800">
+        <div class="bg-white rounded-xl shadow-md p-4 md:p-6 mb-6 border-l-4 border-l-slate-800">
           <h1 class="text-2xl font-bold text-gray-900 mb-4">{{ d.expense.description }}</h1>
           
-          <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <p class="text-sm text-gray-600">Monto Total</p>
               <p class="text-2xl font-bold text-gray-900">\${{ parseFloat(d.expense.amount) | number:'1.0-0' }}</p>
@@ -35,7 +35,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
             </div>
           </div>
 
-          <div class="flex gap-6 text-sm text-gray-600">
+          <div class="flex flex-col md:flex-row gap-2 md:gap-6 text-sm text-gray-600">
             <div>
               <span class="font-medium">Paga las cuotas:</span> {{ d.expense.installmentPayer }}
             </div>
@@ -62,16 +62,16 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 
         <!-- Installments List -->
         <div class="bg-white rounded-xl shadow-md border-t-4 border-t-purple-600">
-          <div class="p-6 border-b">
+          <div class="p-4 md:p-6 border-b">
             <h2 class="text-xl font-semibold text-gray-900">Detalle de Cuotas</h2>
           </div>
 
           <div class="divide-y">
             @for (num of getInstallmentNumbers(d.totalInstallments); track num) {
               @let isPaid = isInstallmentPaid(num);
-              <div class="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border"
+              <div class="p-4 flex flex-col sm:flex-row items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border shrink-0"
                        [class]="isPaid ? 'bg-green-50 text-green-700 border-green-200' : 'bg-gray-50 text-gray-500 border-gray-200'">
                     {{ num }}
                   </div>
@@ -91,7 +91,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
                   </div>
                 </div>
 
-                <div>
+                <div class="w-full sm:w-auto flex justify-end">
                   @if (isPaid) {
                     <button
                       (click)="unpayInstallment(num)"

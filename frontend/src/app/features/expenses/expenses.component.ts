@@ -10,12 +10,12 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, LoaderComponent],
   template: `
-    <div class="max-w-7xl mx-auto p-6">
-      <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Gastos</h1>
+    <div class="max-w-7xl mx-auto p-4 md:p-6">
+      <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 gap-4">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Gastos</h1>
         <button
           (click)="showForm.set(true)"
-          class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-sm hover:shadow"
+          class="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-medium transition-all shadow-sm hover:shadow"
         >
           Nuevo Gasto
         </button>
@@ -221,10 +221,10 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
         } @else {
           <div class="divide-y">
             @for (expense of expenses(); track expense.id) {
-              <div class="p-6 hover:bg-gray-50 transition-colors">
-                <div class="flex items-start justify-between">
-                  <div class="flex-1">
-                    <div class="flex items-center gap-3 mb-2">
+              <div class="p-4 md:p-6 hover:bg-gray-50 transition-colors">
+                <div class="flex flex-col md:flex-row items-start justify-between gap-4">
+                  <div class="flex-1 w-full">
+                    <div class="flex flex-wrap items-center gap-2 md:gap-3 mb-2">
                       <h3 class="text-lg font-semibold text-gray-900">{{ expense.description }}</h3>
                       @if (expense.isInstallment) {
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800">
@@ -255,8 +255,8 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
                     </div>
                   </div>
 
-                  <div class="text-right ml-4">
-                    <p class="text-2xl font-bold text-gray-900 mb-3">\${{ parseFloat(expense.amount) | number:'1.0-0' }}</p>
+                  <div class="w-full md:w-auto flex flex-row items-center justify-between md:flex-col md:items-end md:text-right mt-2 md:mt-0">
+                    <p class="text-xl md:text-2xl font-bold text-gray-900 mb-0 md:mb-3">\${{ parseFloat(expense.amount) | number:'1.0-0' }}</p>
                     <div class="flex gap-2">
                       @if (expense.isInstallment) {
                         <a
